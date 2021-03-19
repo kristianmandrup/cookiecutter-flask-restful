@@ -1,10 +1,10 @@
 import factory
-from {{cookiecutter.app_name}}.models import User
+from {{cookiecutter.app_name}}.models import {{cookiecutter.domain_name|title}}
 
 
-class {{cookiecutter.domain_name}}Factory(factory.Factory):
+class {{cookiecutter.domain_name|title}}Factory(factory.Factory):
 
-    name = factory.Sequence(lambda n: "user%d" % n)
+    name = factory.Sequence(lambda n: "{{cookiecutter.domain_name}}%d" % n)
 
     class Meta:
-        model = {{cookiecutter.domain_name}}
+        model = {{cookiecutter.domain_name|title}}

@@ -13,7 +13,7 @@ def test_get_{{cookiecutter.domain_name}}(client, model, headers):
     rep = client.get(url, headers=admin_headers)
     assert rep.status_code == 200
 
-    data = rep.get_json()["user"]
+    data = rep.get_json()
     assert data is not None
 
 
@@ -36,7 +36,7 @@ def test_put_{{cookiecutter.domain_name}}(client, model, headers):
     assert data is not None
 
 
-def test_delete_{{cookiecutter.domain_name}}(client, db, model, headers):
+def test_delete_{{cookiecutter.domain_name}}(client, model, headers):
     # test 404
     url = url_for('api.by_id', id="100000")
     rep = client.delete(url, headers=headers)
@@ -51,11 +51,11 @@ def test_delete_{{cookiecutter.domain_name}}(client, db, model, headers):
 
 def test_create_{{cookiecutter.domain_name}}(client, headers):
     # test bad data
-    url = url_for('api.{{cookiecutter.domain_name}}s')
+    url = url_for('api.{{cookiecutter.domain_name|pluralize}}s')
     data = {
         # bad data to post
     }
-    rep = client.post(url, json=data, headers=admin_headers)
+    rep = client.post(url, json=data, headers=headers)
     assert rep.status_code == 400
 
     data = {
@@ -70,7 +70,7 @@ def test_create_{{cookiecutter.domain_name}}(client, headers):
 
 
 def test_get_all_{{cookiecutter.domain_name}}(client, model_factory, headers):
-    url = url_for('api.{{cookiecutter.domain_name}}s')
+    url = url_for('api.{{cookiecutter.domain_name|pluralize}}')
     models = model_factory.create_batch(30)
 
     rep = client.get(url, headers=headers)

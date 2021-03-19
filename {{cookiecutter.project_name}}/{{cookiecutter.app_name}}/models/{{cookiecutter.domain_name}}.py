@@ -1,5 +1,5 @@
-class {{cookiecutter.domain_name}}():
-    """Basic {{cookiecutter.domain_name}} model"""
+class {{cookiecutter.domain_name|title}}():
+    """Basic {{cookiecutter.domain_name|title}} model"""
 
     def __repr__(self):
-        return "<User %s>" % self.username
+        return "<{{cookiecutter.domain_name|title}} %s>" % self.name
