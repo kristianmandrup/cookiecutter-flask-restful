@@ -1,13 +1,12 @@
 from flask import request
 from flask_restful import Resource
 from flask_jwt_extended import jwt_required
-from {{cookiecutter.app_name}}.api.schemas import UserSchema
-from {{cookiecutter.app_name}}.models import User
-from {{cookiecutter.app_name}}.extensions import db
+from {{cookiecutter.app_name}}.api.schemas import {{cookiecutter.domain_name}}Schema
+from {{cookiecutter.app_name}}.models import {{cookiecutter.domain_name}}
 from {{cookiecutter.app_name}}.commons.pagination import paginate
 
 
-class UserResource(Resource):
+class {{cookiecutter.domain_name}}Resource(Resource):
     """Single object resource
 
     ---
@@ -16,7 +15,7 @@ class UserResource(Resource):
         - api
       parameters:
         - in: path
-          name: user_id
+          name: id
           schema:
             type: integer
       responses:
@@ -26,22 +25,22 @@ class UserResource(Resource):
               schema:
                 type: object
                 properties:
-                  user: UserSchema
+                  user: {{cookiecutter.domain_name}}Schema
         404:
-          description: user does not exists
+          description: {{cookiecutter.domain_name}} does not exists
     put:
       tags:
         - api
       parameters:
         - in: path
-          name: user_id
+          name: id
           schema:
             type: integer
       requestBody:
         content:
           application/json:
             schema:
-              UserSchema
+              {{cookiecutter.domain_name}}Schema
       responses:
         200:
           content:
@@ -51,16 +50,16 @@ class UserResource(Resource):
                 properties:
                   msg:
                     type: string
-                    example: user updated
-                  user: UserSchema
+                    example: {{cookiecutter.domain_name}} updated
+                  user: {{cookiecutter.domain_name}}Schema
         404:
-          description: user does not exists
+          description: {{cookiecutter.domain_name}} does not exists
     delete:
       tags:
         - api
       parameters:
         - in: path
-          name: user_id
+          name: id
           schema:
             type: integer
       responses:
@@ -72,36 +71,33 @@ class UserResource(Resource):
                 properties:
                   msg:
                     type: string
-                    example: user deleted
+                    example: {{cookiecutter.domain_name}} deleted
         404:
-          description: user does not exists
+          description: {{cookiecutter.domain_name}} does not exists
     """
 
     method_decorators = [jwt_required()]
 
-    def get(self, user_id):
-        schema = UserSchema()
-        user = User.query.get_or_404(user_id)
-        return {"user": schema.dump(user)}
+    def get(self, id):
+        schema = {{cookiecutter.domain_name}}Schema()
+        # get model
+        # model = User.query.get_or_404(id)
+        return {"model": schema.dump(model)}
 
-    def put(self, user_id):
-        schema = UserSchema(partial=True)
-        user = User.query.get_or_404(user_id)
-        user = schema.load(request.json, instance=user)
+    def put(self, id):
+        schema = {{cookiecutter.domain_name}}Schema(partial=True)
+        model = {{cookiecutter.domain_name}}.query.get_or_404(id)
+        model = schema.load(request.json, instance=model)
+        # put model
+        return {"msg": "{{cookiecutter.domain_name}} updated", "model": schema.dump(model)}
 
-        db.session.commit()
-
-        return {"msg": "user updated", "user": schema.dump(user)}
-
-    def delete(self, user_id):
-        user = User.query.get_or_404(user_id)
-        db.session.delete(user)
-        db.session.commit()
-
-        return {"msg": "user deleted"}
+    def delete(self, {{cookiecutter.domain_name}}_id):
+        model = {{cookiecutter.domain_name}}.query.get_or_404(user_id)
+        # delete model 
+        return {"msg": "{{cookiecutter.domain_name}} deleted"}
 
 
-class UserList(Resource):
+class {{cookiecutter.domain_name}}List(Resource):
     """Creation and get_all
 
     ---
@@ -120,7 +116,7 @@ class UserList(Resource):
                       results:
                         type: array
                         items:
-                          $ref: '#/components/schemas/UserSchema'
+                          $ref: '#/components/schemas/{{cookiecutter.domain_name}}Schema'
     post:
       tags:
         - api
@@ -128,7 +124,7 @@ class UserList(Resource):
         content:
           application/json:
             schema:
-              UserSchema
+              {{cookiecutter.domain_name}}Schema
       responses:
         201:
           content:
@@ -138,22 +134,19 @@ class UserList(Resource):
                 properties:
                   msg:
                     type: string
-                    example: user created
-                  user: UserSchema
+                    example: {{cookiecutter.domain_name}} created
+                  user: {{cookiecutter.domain_name}}Schema
     """
 
     method_decorators = [jwt_required()]
 
     def get(self):
-        schema = UserSchema(many=True)
-        query = User.query
+        schema = {{cookiecutter.domain_name}}Schema(many=True)
+        query = {{cookiecutter.domain_name}}.query
         return paginate(query, schema)
 
     def post(self):
-        schema = UserSchema()
-        user = schema.load(request.json)
-
-        db.session.add(user)
-        db.session.commit()
-
-        return {"msg": "user created", "user": schema.dump(user)}, 201
+        schema = {{cookiecutter.domain_name}}Schema()
+        model = schema.load(request.json)
+        # post
+        return {"msg": "{{cookiecutter.domain_name}} created", "model": schema.dump(model)}, 201

@@ -2,11 +2,9 @@ import factory
 from {{cookiecutter.app_name}}.models import User
 
 
-class UserFactory(factory.Factory):
+class {{cookiecutter.domain_name}}Factory(factory.Factory):
 
-    username = factory.Sequence(lambda n: "user%d" % n)
-    email = factory.Sequence(lambda n: "user%d@mail.com" % n)
-    password = "mypwd"
+    name = factory.Sequence(lambda n: "user%d" % n)
 
     class Meta:
-        model = User
+        model = {{cookiecutter.domain_name}}

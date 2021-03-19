@@ -2,7 +2,6 @@ from flask import Flask
 from {{cookiecutter.app_name}} import api
 from {{cookiecutter.app_name}} import auth
 from {{cookiecutter.app_name}}.extensions import apispec
-from {{cookiecutter.app_name}}.extensions import db
 from {{cookiecutter.app_name}}.extensions import jwt
 from {{cookiecutter.app_name}}.extensions import migrate
 
@@ -29,9 +28,9 @@ def create_app(testing=False):
 
 def configure_extensions(app):
     """configure flask extensions"""
-    db.init_app(app)
+    # db.init_app(app)
     jwt.init_app(app)
-    migrate.init_app(app, db)
+    # migrate.init_app(app, db)
 
 
 def configure_apispec(app):
